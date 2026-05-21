@@ -764,6 +764,51 @@ function laadHomePagina() {
 
 // Initialiseer direct
 showPage('home', document.querySelector('.mn-home'));
+
+// ============================================================
+// WACHTWOORD INSTELLEN — pas de regel hieronder aan
+var APP_PASSWORD = 'rtl';
+// ============================================================
+
+function checkPassword() {
+  var input = document.getElementById('pw-input').value;
+  var error = document.getElementById('pw-error');
+  var screen = document.getElementById('password-screen');
+
+  if (simpleHash(input) === simpleHash(APP_PASSWORD)) {
+    localStorage.setItem('rtl_wk2026_auth', simpleHash(APP_PASSWORD));
+    screen.classList.add('hidden');
+    error.textContent = '';
+  } else {
+    error.textContent = 'Onjuist wachtwoord. Probeer opnieuw.';
+    document.getElementById('pw-input').value = '';
+    document.getElementById('pw-input').focus();
+  }
+}
+
+function simpleHash(str) {
+  var hash = 0;
+  for (var i = 0; i < str.length; i++) {
+    var chr = str.charCodeAt(i);
+    hash = ((hash << 5) - hash) + chr;
+    hash = hash & hash;
+  }
+  return hash.toString(36);
+}
+
+function checkAuth() {
+  var stored = localStorage.getItem('rtl_wk2026_auth');
+  var screen = document.getElementById('password-screen');
+  if (stored && stored === simpleHash(APP_PASSWORD)) {
+    screen.classList.add('hidden');
+  }
+}
+
+document.getElementById('pw-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') checkPassword();
+});
+
+checkAuth();
 </script>
 </body>
 </html>

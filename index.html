@@ -456,11 +456,10 @@ body::before{
 /* mobile nav replaced */
 
 @media(max-width:768px){
-  html{overflow-x:hidden}
   body{flex-direction:column}
   .sidebar{display:none}
   
-  .main{min-height:100vh;padding-bottom:calc(68px + env(safe-area-inset-bottom))}
+  .main{min-height:100vh;padding-bottom:calc(68px + env(safe-area-inset-bottom, 0px))}
   .content{padding:0.875rem}
   /* Stad-tabs zichtbaar op mobiel */
   .city-tabs{display:flex}
@@ -570,7 +569,8 @@ body::before{
   display:block;position:fixed;bottom:0;left:0;right:0;z-index:200;
   background:rgba(8,12,20,0.97);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
   border-top:1px solid var(--border);
-  padding:6px 0 env(safe-area-inset-bottom);
+  padding-top: 6px;
+  padding-bottom: env(safe-area-inset-bottom, 0px);
 }
 .mobile-nav-items{display:flex;justify-content:space-around;align-items:flex-start}
 .mn-item{
@@ -635,7 +635,6 @@ body::before{
 </div>
 
 
-<!-- SIDEBAR -->
 <aside class="sidebar">
   <div class="sidebar-brand">
     <div class="brand-tag">RTL Nieuws</div>
@@ -698,7 +697,6 @@ body::before{
   </div>
 </aside>
 
-<!-- MAIN -->
 <main class="main" id="main">
   <div class="topbar">
     <div class="topbar-title" id="topbar-title">TEAM & CONTACTEN</div>
@@ -713,10 +711,8 @@ body::before{
 
   <div class="content">
 
-    <!-- HOME PAGE -->
     <div id="page-home" class="page" style="display:none">
 
-      <!-- KLOK HILVERSUM -->
       <div class="panel" style="margin-bottom:0.875rem;overflow:hidden">
         <div style="padding:1.5rem 1.25rem 1.25rem;text-align:center;background:linear-gradient(135deg,rgba(255,107,0,0.08) 0%,rgba(255,107,0,0.02) 100%)">
           <div id="clock-time" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,18vw,96px);color:var(--white);line-height:1;letter-spacing:2px">00:00:00</div>
@@ -738,14 +734,12 @@ body::before{
         </div>
       </div>
 
-      <!-- WEER WIDGET -->
       <div class="panel" id="weather-panel">
         <div class="panel-header">
           <div class="panel-title"><span class="panel-title-dot"></span>🌤️ Weer vandaag</div>
           <span style="font-size:10px;color:var(--text2);font-style:italic">Open-Meteo</span>
         </div>
         <div class="panel-body" style="padding:0">
-          <!-- Dallas -->
           <div class="plan-row" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
             <div style="text-align:center"><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">DAL</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-dal-temp">—</div></div>
             <div><div class="plan-title" id="hw-dal-desc">Laden…</div><div class="plan-sub">Dallas, Texas</div></div>
@@ -753,7 +747,6 @@ body::before{
             <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2);margin-bottom:2px">🌧️</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-dal-rain">—</div></div>
             <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2);margin-bottom:2px">💧</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-dal-hum">—</div></div>
           </div>
-          <!-- Houston -->
           <div class="plan-row" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
             <div style="text-align:center"><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">HOU</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-hou-temp">—</div></div>
             <div><div class="plan-title" id="hw-hou-desc">Laden…</div><div class="plan-sub">Houston, Texas</div></div>
@@ -761,7 +754,6 @@ body::before{
             <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2);margin-bottom:2px">🌧️</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-hou-rain">—</div></div>
             <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2);margin-bottom:2px">💧</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-hou-hum">—</div></div>
           </div>
-          <!-- Kansas City -->
           <div class="plan-row last" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
             <div style="text-align:center"><div style="font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text2)">KCK</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-kc-temp">—</div></div>
             <div><div class="plan-title" id="hw-kc-desc">Laden…</div><div class="plan-sub">Kansas City</div></div>
@@ -772,18 +764,15 @@ body::before{
         </div>
       </div>
 
-      <!-- WHERE IS EVERYONE -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title"><span class="panel-title-dot"></span>📍 Waar is iedereen vandaag?</div>
           <span style="font-size:11px;color:var(--text2)" id="today-date-label"></span>
         </div>
         <div class="panel-body" id="location-body">
-          <!-- wordt gevuld door JS -->
-        </div>
+          </div>
       </div>
 
-      <!-- WEDSTRIJDEN VANDAAG -->
       <div class="panel">
         <div class="panel-header">
           <div class="panel-title"><span class="panel-title-dot"></span>⚽ Wedstrijden Vandaag</div>
@@ -795,7 +784,6 @@ body::before{
       </div>
     </div>
 
-    <!-- ==================== CREW ==================== -->
     <div id="page-crew" class="page" style="display:none">
       <div class="page-tabs" id="crew-tabs">
         <button class="pt-tab active" onclick="showTab('crew','vs',this)">🇺🇸 VS</button>
@@ -839,7 +827,6 @@ body::before{
       </div></div></div>
     </div>
 
-    <!-- ==================== TRAVEL ==================== -->
     <div id="page-travel" class="page" style="display:none">
       <div class="page-tabs" id="travel-tabs">
         <button class="pt-tab active" onclick="showTab('travel','planning',this)">📅 Planning</button>
@@ -847,7 +834,6 @@ body::before{
         <button class="pt-tab" onclick="showTab('travel','flights',this)">✈️ Vluchten</button>
       </div>
 
-      <!-- PLANNING -->
       <div id="travel-planning" class="tab-panel active">
         <div class="page-tabs" id="planning-tabs" style="margin-bottom:0.875rem">
           <button class="pt-tab active" onclick="showTab('planning','poranje',this)">🟠 Oranje</button>
@@ -860,7 +846,7 @@ body::before{
           <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 6393 · MSP → Kansas City MCI</div><div class="plan-sub">13:55 → 15:22 · regionaal jet</div></div></div>
           <div class="plan-section-label">Dallas</div>
           <div class="plan-row flight"><div class="plan-date">za 13 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">WN 4188 · Kansas City → Dallas Love Field</div><div class="plan-sub">05:10 → 06:45 · Southwest · Boeing 737</div></div></div>
-          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&amp;T Stadium Dallas · 22:00 NL</div></div></div>
+          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&T Stadium Dallas · 22:00 NL</div></div></div>
           <div class="plan-row flight"><div class="plan-date">ma 15 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">WN 4631 · Dallas → Kansas City</div><div class="plan-sub">06:00 → 07:30 · Southwest · Boeing 737</div></div></div>
           <div class="plan-section-label">Houston</div>
           <div class="plan-row flight"><div class="plan-date">vr 19 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">UA 2779 · Kansas City → Houston IAH</div><div class="plan-sub">06:16 → 08:24 · United · Boeing 737</div></div></div>
@@ -879,7 +865,7 @@ body::before{
           <div class="plan-row drive"><div class="plan-date">wo 10 jun</div><div class="plan-type drive-type">🚗</div><div class="plan-main"><div class="plan-title">Rijden Houston → Dallas</div><div class="plan-sub">ca. 4 uur</div></div></div>
           <div class="plan-section-label">Dallas</div>
           <div class="plan-row stay"><div class="plan-date">10–13 jun</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">Verblijf Dallas</div><div class="plan-sub">906 South Ewing Avenue</div></div></div>
-          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&amp;T Stadium Dallas · 22:00 NL</div></div></div>
+          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&T Stadium Dallas · 22:00 NL</div></div></div>
           <div class="plan-row drive"><div class="plan-date">di 16 jun</div><div class="plan-type drive-type">🚗</div><div class="plan-main"><div class="plan-title">Rijden Dallas → Houston</div><div class="plan-sub">ca. 4 uur</div></div></div>
           <div class="plan-section-label">Houston</div>
           <div class="plan-row stay"><div class="plan-date">16–19 jun</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">Verblijf Houston</div><div class="plan-sub">5430 Havenwoods Drive</div></div></div>
@@ -899,9 +885,9 @@ body::before{
           <div class="plan-section-label">Naar Dallas</div>
           <div class="plan-row flight"><div class="plan-date">za 13 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">DL 1783 · Curaçao CUR → Atlanta ATL</div><div class="plan-sub">15:20 → 19:50 · Delta · Boeing 757</div></div></div>
           <div class="plan-row flight"><div class="plan-date">za 13 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">DL 1104 · Atlanta ATL → Dallas Love Field</div><div class="plan-sub">21:15 → 22:31 · Delta · Boeing 737</div></div></div>
-          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&amp;T Stadium Dallas · 22:00 NL</div></div></div>
+          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&T Stadium Dallas · 22:00 NL</div></div></div>
           <div class="plan-row drive"><div class="plan-date">di 16 jun</div><div class="plan-type drive-type">🚗</div><div class="plan-main"><div class="plan-title">Rijden Dallas → Houston</div><div class="plan-sub">samen met Team Fans</div></div></div>
-          <div class="plan-section-label">Houston &amp; Kansas City</div>
+          <div class="plan-section-label">Houston & Kansas City</div>
           <div class="plan-row match"><div class="plan-date">za 20 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Zweden</div><div class="plan-sub">NRG Stadium Houston · 19:00 NL</div></div></div>
           <div class="plan-row flight"><div class="plan-date">ma 22 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">WN 1037 · Houston Hobby → Kansas City</div><div class="plan-sub">07:30 → 09:25 · Southwest</div></div></div>
           <div class="plan-row match"><div class="plan-date">vr 26 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">Tunesië – NL</div><div class="plan-sub">Arrowhead Stadium · 01:00 NL</div></div></div>
@@ -911,7 +897,6 @@ body::before{
         </div></div></div>
       </div>
 
-      <!-- ACCOMMODATIES -->
       <div id="travel-accom" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label">🟠 Team Oranje</div>
         <div class="plan-row stay"><div class="plan-date">Dallas</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">906 South Ewing Avenue</div><div class="plan-sub">Dallas TX 75203 · Airbnb</div></div></div>
@@ -934,7 +919,6 @@ body::before{
         <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=8+Corriweg+Willemstad+Curacao" target="_blank">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=8+Corriweg+Willemstad+Curacao" target="_blank">Apple Maps</a></div>
       </div></div></div>
 
-      <!-- VLUCHTEN -->
       <div id="travel-flights" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label">🟠 Team Oranje</div>
         <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 6065 · AMS → MSP</div><div class="plan-sub">09:40 → 11:22 · A350</div></div></div>
@@ -957,7 +941,6 @@ body::before{
       </div></div></div>
     </div>
 
-    <!-- ==================== DOCS ==================== -->
     <div id="page-docs" class="page" style="display:none">
       <div class="page-tabs" id="docs-tabs">
         <button class="pt-tab active" onclick="showTab('docs','licentie',this)">📋 Licentie</button>
@@ -968,7 +951,7 @@ body::before{
         <div class="plan-section-label">ℹ️ RTL Nieuws + Editie NL = 1 licentie · RTL Z apart · Accreditatie: 3 via NOS, 3 als NRH</div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">1</div><div><div class="plan-title">Max. 2 min. beeldmateriaal per wedstrijddag</div><div class="plan-sub">Max. 1 min. per wedstrijd · max. 5 fragmenten per minuut</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">2</div><div><div class="plan-title">Beelden direct na laatste fluitsignaal</div><div class="plan-sub">Op de wedstrijddag zelf</div></div></div>
-        <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">3</div><div><div class="plan-title">Archiefrechten: max. 1 min. per dag</div><div class="plan-sub">Alleen materiaal &gt;24 uur · aanvragen via dms@nos.nl</div></div></div>
+        <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">3</div><div><div class="plan-title">Archiefrechten: max. 1 min. per dag</div><div class="plan-sub">Alleen materiaal >24 uur · aanvragen via dms@nos.nl</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">4</div><div><div class="plan-title">Persconferentie NL Elftal: max. 90 sec.</div><div class="plan-sub">Niet live/integraal · geen NOS-commentaar of presentatoren</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">5</div><div><div class="plan-title">"Bron: NOS Sport" min. 20 sec. zichtbaar</div><div class="plan-sub">Bij elke vertoning</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">6</div><div><div class="plan-title">Geen losse beelden online</div><div class="plan-sub">Volledige uitzendingen mogen online mits geoblock</div></div></div>
@@ -983,7 +966,7 @@ body::before{
       </div></div></div>
       <div id="docs-mixedzone" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label">Mixed Zone Station (vaste positie)</div>
-        <div class="plan-row" style="grid-template-columns:auto 1fr;gap:10px;align-items:center;min-height:44px"><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(231,76,60,0.15);color:#e74c3c;white-space:nowrap">❌ Geen eigen camera</span><div class="plan-sub">Twee vaste stations (Team A &amp; B) · FIFA HB Camera aanwezig</div></div>
+        <div class="plan-row" style="grid-template-columns:auto 1fr;gap:10px;align-items:center;min-height:44px"><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(231,76,60,0.15);color:#e74c3c;white-space:nowrap">❌ Geen eigen camera</span><div class="plan-sub">Twee vaste stations (Team A & B) · FIFA HB Camera aanwezig</div></div>
         <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📹</div><div class="plan-main"><div class="plan-title">Content via Team A/B feeds en FIFA MAX</div><div class="plan-sub">Journalisten kunnen vragen stellen, geen eigen camera's</div></div></div>
         <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">👥</div><div class="plan-main"><div class="plan-title">2 spelers per team in groepsfase</div><div class="plan-sub">Vanaf R16: 3 spelers per team</div></div></div>
         <div class="plan-section-label">Mixed Zone (traditioneel)</div>
@@ -991,7 +974,7 @@ body::before{
         <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">📋</div><div class="plan-main"><div class="plan-title">Boeking vereist</div><div class="plan-sub">Terwijl spelers het stadion verlaten</div></div></div>
         <div class="plan-section-label">Post-match persconferentie</div>
         <div class="plan-row" style="grid-template-columns:auto 1fr;gap:10px;align-items:center;min-height:44px"><span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(231,76,60,0.15);color:#e74c3c;white-space:nowrap">❌ Beperkte ENG</span><div class="plan-sub">Alleen voor broadcasters van de spelende teams</div></div>
-        <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📺</div><div class="plan-main"><div class="plan-title">Content op Fan &amp; Reaction feed</div><div class="plan-sub">Multi-Feeds via IBC</div></div></div>
+        <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📺</div><div class="plan-main"><div class="plan-title">Content op Fan & Reaction feed</div><div class="plan-sub">Multi-Feeds via IBC</div></div></div>
         <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">⚠️</div><div class="plan-main"><div class="plan-title">No-shows worden bijgehouden</div></div></div>
       </div></div></div>
       <div id="docs-accreditatie" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
@@ -1000,7 +983,6 @@ body::before{
       </div></div></div>
     </div>
 
-    <!-- ==================== TOERNOOI ==================== -->
     <div id="page-toernooi" class="page" style="display:none">
       <div class="page-tabs" id="toernooi-tabs">
         <button class="pt-tab active" onclick="showTab('toernooi','schema',this)">⚽ Schema</button>
@@ -1110,17 +1092,13 @@ body::before{
       </div>
     </div>
 
-    <!-- SQUAD PAGE -->
-
-    <!-- SQUAD PAGE -->
-
-      </div>
+    </div>
       <div id="toernooi-selectie" class="tab-panel">
             <div id="page-squad" class="page" style="display:none">
       <div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label" style="color:var(--accent)">⚠️ Oproep 20 maart 2026 — definitieve selectie volgt begin juni 2026</div>
         <div class="plan-section-label">Keepers</div>
-        <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">1</div><div><div class="plan-title">Bart Verbruggen</div><div class="plan-sub">Brighton &amp; Hove Albion</div></div></div>
+        <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">1</div><div><div class="plan-title">Bart Verbruggen</div><div class="plan-sub">Brighton & Hove Albion</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">2</div><div><div class="plan-title">Mark Flekken</div><div class="plan-sub">Brentford</div></div></div>
         <div class="plan-row last" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">3</div><div><div class="plan-title">Justin Bijlow</div><div class="plan-sub">Genoa</div></div></div>
         <div class="plan-section-label">Verdedigers</div>
@@ -1131,7 +1109,7 @@ body::before{
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">8</div><div><div class="plan-title">Nathan Aké</div><div class="plan-sub">Manchester City</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">9</div><div><div class="plan-title">Jeremie Frimpong</div><div class="plan-sub">Bayer Leverkusen</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">10</div><div><div class="plan-title">Jorrel Hato</div><div class="plan-sub">Ajax</div></div></div>
-        <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">11</div><div><div class="plan-title">Jan Paul van Hecke</div><div class="plan-sub">Brighton &amp; Hove Albion</div></div></div>
+        <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">11</div><div><div class="plan-title">Jan Paul van Hecke</div><div class="plan-sub">Brighton & Hove Albion</div></div></div>
         <div class="plan-row last" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">12</div><div><div class="plan-title">Stefan de Vrij</div><div class="plan-sub">Internazionale</div></div></div>
         <div class="plan-section-label">Middenvelders</div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">13</div><div><div class="plan-title">Ryan Gravenberch</div><div class="plan-sub">Liverpool</div></div></div>
@@ -1163,8 +1141,7 @@ body::before{
           <button class="pt-tab" onclick="showTab('steden','curacao',this)">🏝️ Curaçao</button>
         </div>
 
-        <div id="steden-dallas" class="tab-panel active">    <!-- DALLAS -->
-    <div id="page-dallas" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+        <div id="steden-dallas" class="tab-panel active">    <div id="page-dallas" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
       <div class="plan-section-label">🏠 Accommodatie</div>
       <div class="plan-row stay"><div class="plan-date">Adres</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">906 South Ewing Avenue</div><div class="plan-sub">Dallas TX 75203 · Airbnb · 10 min centrum · 25 min stadion</div></div></div>
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=906+South+Ewing+Avenue+Dallas+TX" target="_blank">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=906+South+Ewing+Avenue+Dallas+TX" target="_blank">Apple Maps</a></div>
@@ -1174,19 +1151,18 @@ body::before{
       <div class="plan-row stay"><div class="plan-date">Ziekenhuis</div><div class="plan-type stay-type">🏥</div><div class="plan-main"><div class="plan-title">Baylor University Medical Center</div><div class="plan-sub">3500 Gaston Ave, Dallas TX 75246</div></div></div>
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=Baylor+University+Medical+Center+Dallas" target="_blank" style="font-size:11px">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=Baylor+University+Medical+Center+Dallas" target="_blank" style="font-size:11px">Apple Maps</a></div>
       <div class="plan-section-label">🅿️ Parkeren</div>
-      <div class="plan-row stay"><div class="plan-date">Stadion</div><div class="plan-type stay-type">🏟️</div><div class="plan-main"><div class="plan-title">AT&amp;T Stadium (Arlington)</div><div class="plan-sub">Lots $75–100 · Lot 14 op 15 min lopen $25–30 · SpotHero · Rideshare Lot 15</div></div></div>
-      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Dallas</div><div class="plan-sub">Main St &amp; Commerce St · $10–20/dag · ParkWhiz app</div></div></div>
+      <div class="plan-row stay"><div class="plan-date">Stadion</div><div class="plan-type stay-type">🏟️</div><div class="plan-main"><div class="plan-title">AT&T Stadium (Arlington)</div><div class="plan-sub">Lots $75–100 · Lot 14 op 15 min lopen $25–30 · SpotHero · Rideshare Lot 15</div></div></div>
+      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Dallas</div><div class="plan-sub">Main St & Commerce St · $10–20/dag · ParkWhiz app</div></div></div>
       <div class="plan-section-label">ℹ️ Tips</div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🌡️</div><div class="plan-main"><div class="plan-title">Juni: 35–38°C</div><div class="plan-sub">Water en zonnecrème essentieel</div></div></div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🔴</div><div class="plan-main"><div class="plan-title">Rechtsaf bij rood toegestaan</div><div class="plan-sub">Tenzij bord "No Turn on Red"</div></div></div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📵</div><div class="plan-main"><div class="plan-title">Texten verboden, handsfree verplicht</div></div></div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🍺</div><div class="plan-main"><div class="plan-title">Alcohol vanaf 21 jaar</div><div class="plan-sub">Altijd ID meenemen</div></div></div>
-      <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">📶</div><div class="plan-main"><div class="plan-title">AT&amp;T Stadium ligt in Arlington</div><div class="plan-sub">25–40 min reistijd vanuit centrum Dallas</div></div></div>
+      <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">📶</div><div class="plan-main"><div class="plan-title">AT&T Stadium ligt in Arlington</div><div class="plan-sub">25–40 min reistijd vanuit centrum Dallas</div></div></div>
     </div></div></div>
 
 </div>
-        <div id="steden-houston" class="tab-panel">    <!-- HOUSTON -->
-    <div id="page-houston" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+        <div id="steden-houston" class="tab-panel">    <div id="page-houston" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
       <div class="plan-section-label">🏠 Accommodaties</div>
       <div class="plan-row stay"><div class="plan-date">Oranje</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">5430 Havenwoods Drive</div><div class="plan-sub">Houston TX 77066 · Airbnb · 20 min centrum · 30 min stadion</div></div></div>
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=5430+Havenwoods+Drive+Houston+TX" target="_blank">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=5430+Havenwoods+Drive+Houston+TX" target="_blank">Apple Maps</a></div>
@@ -1199,7 +1175,7 @@ body::before{
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=Memorial+Hermann+Texas+Medical+Center+Houston" target="_blank" style="font-size:11px">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=Memorial+Hermann+Texas+Medical+Center+Houston" target="_blank" style="font-size:11px">Apple Maps</a></div>
       <div class="plan-section-label">🅿️ Parkeren</div>
       <div class="plan-row stay"><div class="plan-date">Stadion</div><div class="plan-type stay-type">🏟️</div><div class="plan-main"><div class="plan-title">NRG Stadium</div><div class="plan-sub">Vanaf $40 · cashless · Rideshare Yellow Lot 35 via Gate 16B</div></div></div>
-      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Houston</div><div class="plan-sub">Main St &amp; Smith St · $10–20/dag · SpotHero app</div></div></div>
+      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Houston</div><div class="plan-sub">Main St & Smith St · $10–20/dag · SpotHero app</div></div></div>
       <div class="plan-section-label">ℹ️ Tips</div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🌡️</div><div class="plan-main"><div class="plan-title">Juni: 34–37°C, hoge luchtvochtigheid</div><div class="plan-sub">Zonnecrème essentieel</div></div></div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🛣️</div><div class="plan-main"><div class="plan-title">Tolwegen I-10, Beltway 8, Hardy</div><div class="plan-sub">EZ Tag of rekening nagestuurd</div></div></div>
@@ -1208,8 +1184,7 @@ body::before{
     </div></div></div>
 
 </div>
-        <div id="steden-kc" class="tab-panel">    <!-- KANSAS CITY -->
-    <div id="page-kc" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+        <div id="steden-kc" class="tab-panel">    <div id="page-kc" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
       <div class="plan-section-label">🏠 Accommodaties</div>
       <div class="plan-row stay"><div class="plan-date">Oranje</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">323 Emanuel Cleaver II Blvd</div><div class="plan-sub">Kansas City MO 64112 · Airbnb · 10 min centrum · 15 min stadion</div></div></div>
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=323+Emanuel+Cleaver+II+Boulevard+Kansas+City+MO" target="_blank">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=323+Emanuel+Cleaver+II+Boulevard+Kansas+City+MO" target="_blank">Apple Maps</a></div>
@@ -1222,17 +1197,16 @@ body::before{
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=University+of+Kansas+Health+System+Kansas+City" target="_blank" style="font-size:11px">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=University+of+Kansas+Health+System+Kansas+City" target="_blank" style="font-size:11px">Apple Maps</a></div>
       <div class="plan-section-label">🅿️ Parkeren</div>
       <div class="plan-row stay"><div class="plan-date">Stadion</div><div class="plan-type stay-type">🏟️</div><div class="plan-main"><div class="plan-title">Arrowhead Stadium (GEHA Field)</div><div class="plan-sub">Red Lots vanaf $25 via SpotHero · Altijd vooraf reserveren · Rideshare Blue Ridge Cutoff</div></div></div>
-      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Kansas City</div><div class="plan-sub">Walnut St &amp; Grand Blvd · $8–15/dag</div></div></div>
+      <div class="plan-row last stay"><div class="plan-date">Centrum</div><div class="plan-type stay-type">🏙️</div><div class="plan-main"><div class="plan-title">Downtown Kansas City</div><div class="plan-sub">Walnut St & Grand Blvd · $8–15/dag</div></div></div>
       <div class="plan-section-label">ℹ️ Tips</div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🍖</div><div class="plan-main"><div class="plan-title">BBQ-hoofdstad van de VS</div><div class="plan-sub">Arthur Bryant's of Joe's Kansas City</div></div></div>
-      <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🎷</div><div class="plan-main"><div class="plan-title">18th &amp; Vine Jazz District</div><div class="plan-sub">Historisch jazzdistrict, de moeite waard</div></div></div>
+      <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🎷</div><div class="plan-main"><div class="plan-title">18th & Vine Jazz District</div><div class="plan-sub">Historisch jazzdistrict, de moeite waard</div></div></div>
       <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">🌡️</div><div class="plan-main"><div class="plan-title">Juni: 30–34°C, soms onweer</div><div class="plan-sub">Houd weersvoorspelling in de gaten</div></div></div>
       <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">🏈</div><div class="plan-main"><div class="plan-title">Chiefs-fans zijn trots</div><div class="plan-sub">Respecteer hun cultuur ook als je voor Oranje gaat</div></div></div>
     </div></div></div>
 
 </div>
-        <div id="steden-curacao" class="tab-panel">    <!-- CURAÇAO -->
-    <div id="page-curacao" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+        <div id="steden-curacao" class="tab-panel">    <div id="page-curacao" class="page" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
       <div class="plan-section-label">🏠 Accommodatie — Matthijs</div>
       <div class="plan-row stay"><div class="plan-date">Adres</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">8 Corriweg, Willemstad, Curaçao</div><div class="plan-sub">10 min Willemstad · 20 min Jan Thiel · 5 min stadion</div></div></div>
       <div class="plan-row last" style="grid-template-columns:1fr 1fr;gap:8px;padding:10px 1rem"><a class="map-btn map-btn-gm" href="https://www.google.com/maps/search/?api=1&query=8+Corriweg+Willemstad+Curacao" target="_blank">Google Maps</a><a class="map-btn map-btn-am" href="https://maps.apple.com/?q=8+Corriweg+Willemstad+Curacao" target="_blank">Apple Maps</a></div>
@@ -1350,14 +1324,11 @@ body::before{
       </div>
     </div>
 
-    <!-- SQUAD PAGE -->
-
-    <!-- SQUAD PAGE -->
     <div id="page-squad" class="page" style="display:none">
       <div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label" style="color:var(--accent)">⚠️ Oproep 20 maart 2026 — definitieve selectie volgt begin juni 2026</div>
         <div class="plan-section-label">Keepers</div>
-        <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">1</div><div><div class="plan-title">Bart Verbruggen</div><div class="plan-sub">Brighton &amp; Hove Albion</div></div></div>
+        <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">1</div><div><div class="plan-title">Bart Verbruggen</div><div class="plan-sub">Brighton & Hove Albion</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">2</div><div><div class="plan-title">Mark Flekken</div><div class="plan-sub">Brentford</div></div></div>
         <div class="plan-row last" style="grid-template-columns:32px 1fr auto;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">3</div><div><div class="plan-title">Justin Bijlow</div><div class="plan-sub">Genoa</div></div></div>
         <div class="plan-section-label">Verdedigers</div>
@@ -1368,7 +1339,7 @@ body::before{
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">8</div><div><div class="plan-title">Nathan Aké</div><div class="plan-sub">Manchester City</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">9</div><div><div class="plan-title">Jeremie Frimpong</div><div class="plan-sub">Bayer Leverkusen</div></div></div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">10</div><div><div class="plan-title">Jorrel Hato</div><div class="plan-sub">Ajax</div></div></div>
-        <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">11</div><div><div class="plan-title">Jan Paul van Hecke</div><div class="plan-sub">Brighton &amp; Hove Albion</div></div></div>
+        <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">11</div><div><div class="plan-title">Jan Paul van Hecke</div><div class="plan-sub">Brighton & Hove Albion</div></div></div>
         <div class="plan-row last" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">12</div><div><div class="plan-title">Stefan de Vrij</div><div class="plan-sub">Internazionale</div></div></div>
         <div class="plan-section-label">Middenvelders</div>
         <div class="plan-row" style="grid-template-columns:32px 1fr;gap:10px;align-items:center"><div class="squad-num" style="font-family:'Bebas Neue',sans-serif;font-size:20px;color:var(--border);text-align:right">13</div><div><div class="plan-title">Ryan Gravenberch</div><div class="plan-sub">Liverpool</div></div></div>
@@ -1389,13 +1360,12 @@ body::before{
       </div></div>
     </div>
 
-    <!-- LICENSE PAGE -->
     <div id="page-license" class="page" style="display:none">
       <div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label">ℹ️ RTL Nieuws + Editie NL = 1 licentie · RTL Z apart · Accreditatie: 3 via NOS, 3 als NRH</div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">1</div><div><div class="plan-title">Max. 2 min. beeldmateriaal per wedstrijddag</div><div class="plan-sub">Max. 1 min. per wedstrijd · max. 5 fragmenten per minuut</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">2</div><div><div class="plan-title">Beelden gebruiken direct na laatste fluitsignaal</div><div class="plan-sub">Op de wedstrijddag zelf</div></div></div>
-        <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">3</div><div><div class="plan-title">Archiefrechten: max. 1 min. per dag</div><div class="plan-sub">Alleen materiaal &gt;24 uur · aanvragen via dms@nos.nl</div></div></div>
+        <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">3</div><div><div class="plan-title">Archiefrechten: max. 1 min. per dag</div><div class="plan-sub">Alleen materiaal >24 uur · aanvragen via dms@nos.nl</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">4</div><div><div class="plan-title">Persconferentie NL Elftal: max. 90 sec. samenvatting</div><div class="plan-sub">Niet live/integraal · geen NOS-commentaar of presentatoren</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">5</div><div><div class="plan-title">"Bron: NOS Sport" min. 20 sec. zichtbaar</div><div class="plan-sub">Bij elke vertoning van beeldmateriaal</div></div></div>
         <div class="plan-row" style="grid-template-columns:28px 1fr;gap:10px;align-items:start"><div style="font-family:'Bebas Neue',sans-serif;font-size:18px;color:var(--accent);text-align:right;padding-top:1px">6</div><div><div class="plan-title">Geen losse beelden online</div><div class="plan-sub">Volledige uitzendingen mogen online mits geoblock</div></div></div>
@@ -1410,13 +1380,12 @@ body::before{
       </div></div>
     </div>
 
-    <!-- MIXED ZONE PAGE -->
     <div id="page-mixed" class="page" style="display:none">
       <div class="panel"><div class="panel-body" style="padding:0">
         <div class="plan-section-label">Mixed Zone Station (vaste positie)</div>
         <div class="plan-row" style="grid-template-columns:auto 1fr;gap:10px;align-items:center;min-height:44px">
           <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(231,76,60,0.15);color:#e74c3c;white-space:nowrap">❌ Geen eigen camera</span>
-          <div class="plan-sub">Twee vaste stations (Team A &amp; B) · FIFA HB Camera aanwezig</div>
+          <div class="plan-sub">Twee vaste stations (Team A & B) · FIFA HB Camera aanwezig</div>
         </div>
         <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📹</div><div class="plan-main"><div class="plan-title">Content via Team A/B feeds en FIFA MAX</div><div class="plan-sub">Journalisten kunnen vragen stellen, geen eigen camera's</div></div></div>
         <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">👥</div><div class="plan-main"><div class="plan-title">2 spelers per team in groepsfase</div><div class="plan-sub">Vanaf R16: 3 spelers per team</div></div></div>
@@ -1433,15 +1402,12 @@ body::before{
           <span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:4px;background:rgba(231,76,60,0.15);color:#e74c3c;white-space:nowrap">❌ Beperkte ENG</span>
           <div class="plan-sub">Alleen voor broadcasters van de spelende teams</div>
         </div>
-        <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📺</div><div class="plan-main"><div class="plan-title">Content op Fan &amp; Reaction feed</div><div class="plan-sub">Multi-Feeds via IBC</div></div></div>
+        <div class="plan-row stay"><div class="plan-date"></div><div class="plan-type stay-type">📺</div><div class="plan-main"><div class="plan-title">Content op Fan & Reaction feed</div><div class="plan-sub">Multi-Feeds via IBC</div></div></div>
         <div class="plan-row last stay"><div class="plan-date"></div><div class="plan-type stay-type">⚠️</div><div class="plan-main"><div class="plan-title">No-shows worden bijgehouden</div><div class="plan-sub">Meegewogen bij volgende toewijzingen</div></div></div>
       </div></div>
     </div>
 
-  </div><!-- /content -->
-
-<!-- MOBILE NAV -->
-<nav class="mobile-nav">
+  </div></main><nav class="mobile-nav">
   <div class="mobile-nav-items">
     <div class="mn-item" onclick="showPage('crew',this)"><span class="mn-icon">👥</span><span class="mn-label">Crew</span></div>
     <div class="mn-item" onclick="showPage('travel',this)"><span class="mn-icon">✈️</span><span class="mn-label">Travel</span></div>
@@ -1450,7 +1416,7 @@ body::before{
     <div class="mn-item" onclick="showPage('toernooi',this)"><span class="mn-icon">⚽</span><span class="mn-label">Toernooi</span></div>
   </div>
 </nav>
-</div><!-- /main -->
+
 
 <script>
 // ===== LOCATIES PER DAG =====
@@ -1973,7 +1939,7 @@ setInterval(updateClocks, 1000);
 
 // ============================================================
 // WACHTWOORD INSTELLEN — pas de regel hieronder aan
-var APP_PASSWORD = 'wk';
+var APP_PASSWORD = 'JOUW_WACHTWOORD_HIER';
 // ============================================================
 
 function checkPassword() {

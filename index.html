@@ -1,0 +1,769 @@
+<!DOCTYPE html>
+<html lang="nl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>RTL Nieuws — WK 2026</title>
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="WK 2026">
+<link rel="apple-touch-icon" href="icon.png">
+<link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080c14;
+  --surface:rgba(255,255,255,0.04);
+  --surface2:rgba(255,255,255,0.07);
+  --border:rgba(255,255,255,0.08);
+  --accent:#ff6b00;
+  --accent2:#ffa733;
+  --text:#e8e8e8;
+  --text2:#888;
+  --blue:#3d8ef0;
+  --green:#2ec07a;
+  --sidebar:260px;
+  --white:#ffffff;
+  --panel-bg:#111827;
+  --sidebar-bg:rgba(8,12,20,0.97);
+  --topbar-bg:rgba(8,12,20,0.92);
+  --input-bg:rgba(255,255,255,0.06);
+  --shadow:rgba(0,0,0,0.4);
+}
+
+@media(prefers-color-scheme:light){
+  :root{
+    --bg:#f0f2f5;
+    --surface:rgba(0,0,0,0.03);
+    --surface2:rgba(0,0,0,0.06);
+    --border:rgba(0,0,0,0.1);
+    --text:#1a1a1a;
+    --text2:#666;
+    --blue:#1a5cb8;
+    --white:#1a1a1a;
+    --panel-bg:#ffffff;
+    --sidebar-bg:rgba(255,255,255,0.98);
+    --topbar-bg:rgba(240,242,245,0.95);
+    --input-bg:rgba(0,0,0,0.04);
+    --shadow:rgba(0,0,0,0.1);
+  }
+  body::before{
+    background:
+      radial-gradient(ellipse 80% 50% at 20% 20%,rgba(255,107,0,0.04) 0%,transparent 60%),
+      radial-gradient(ellipse 60% 40% at 80% 80%,rgba(61,142,240,0.03) 0%,transparent 60%);
+  }
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{height:100%}
+body{font-family:'DM Sans',sans-serif;background:var(--bg);color:var(--text);display:flex;min-height:100vh}
+
+body::before{
+  content:"";position:fixed;inset:0;
+  background:
+    radial-gradient(ellipse 80% 50% at 20% 20%,rgba(255,107,0,0.06) 0%,transparent 60%),
+    radial-gradient(ellipse 60% 40% at 80% 80%,rgba(61,142,240,0.05) 0%,transparent 60%);
+  pointer-events:none;z-index:0;
+}
+
+/* SIDEBAR */
+.sidebar{
+  width:var(--sidebar);flex-shrink:0;
+  height:100vh;
+  background:var(--sidebar-bg);
+  border-right:1px solid var(--border);
+  display:flex;flex-direction:column;
+  position:relative;z-index:10;
+  backdrop-filter:blur(20px);
+}
+.sidebar-brand{
+  padding:1.5rem 1.25rem 1rem;
+  border-bottom:1px solid var(--border);
+}
+.brand-tag{
+  font-size:9px;letter-spacing:3px;text-transform:uppercase;
+  color:var(--accent);font-weight:600;margin-bottom:4px;
+}
+.brand-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:26px;letter-spacing:1px;color:var(--white);line-height:1;
+}
+.brand-sub{font-size:11px;color:var(--text2);margin-top:4px}
+
+.oranje-badge{
+  margin:1rem 1.25rem;
+  background:linear-gradient(135deg,rgba(255,107,0,0.15),rgba(255,167,51,0.1));
+  border:1px solid rgba(255,107,0,0.3);
+  border-radius:10px;padding:10px 14px;
+}
+.ob-label{font-size:10px;color:var(--accent);font-weight:600;letter-spacing:1px;text-transform:uppercase}
+.ob-matches{display:flex;flex-direction:column;gap:4px;margin-top:6px}
+.ob-match{font-size:11px;color:#ccc;display:flex;align-items:center;gap:6px}
+.ob-dot{width:5px;height:5px;border-radius:50%;background:var(--accent);flex-shrink:0}
+
+.nav{flex:1;padding:0.75rem 0;overflow-y:auto}
+.nav-section-label{
+  font-size:9px;letter-spacing:2px;text-transform:uppercase;
+  color:var(--text2);padding:0.75rem 1.25rem 0.25rem;
+}
+.nav-item{
+  display:flex;align-items:center;gap:10px;
+  padding:0.6rem 1.25rem;cursor:pointer;
+  font-size:13px;color:var(--text2);
+  transition:all 0.15s;border-left:2px solid transparent;
+  user-select:none;
+}
+.nav-item:hover{color:var(--text);background:var(--surface)}
+.nav-item.active{color:var(--white);background:var(--surface2);border-left-color:var(--accent)}
+.nav-icon{font-size:15px;width:20px;text-align:center;flex-shrink:0}
+.sidebar-footer{
+  padding:1rem 1.25rem;border-top:1px solid var(--border);
+  font-size:11px;color:var(--text2);
+}
+
+/* MAIN */
+.main{flex:1;min-height:100vh;position:relative;overflow-x:clip;padding-top:52px}
+.topbar{
+  position:fixed;top:0;left:0;right:0;
+  background:var(--topbar-bg);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);
+  border-bottom:1px solid var(--border);
+  padding:8px 1.5rem 0;
+  height:62px;
+  display:flex;align-items:flex-end;justify-content:space-between;
+  padding-bottom:10px;
+  z-index:100;
+}
+.topbar-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:18px;letter-spacing:2px;color:var(--white);
+}
+
+.content{padding:2rem}
+
+.panel{
+  background:var(--panel-bg);
+  border:1px solid var(--border);
+  border-radius:16px;
+  margin-bottom:1.25rem;
+  overflow:hidden;
+}
+.panel-header{
+  padding:1.25rem 1.5rem;
+  border-bottom:1px solid var(--border);
+  display:flex;align-items:center;justify-content:space-between;
+}
+.panel-title{
+  font-family:'Bebas Neue',sans-serif;
+  font-size:16px;letter-spacing:2px;color:var(--white);
+  display:flex;align-items:center;gap:10px;
+}
+.panel-title-dot{
+  width:8px;height:8px;border-radius:50%;
+  background:var(--accent);
+  box-shadow:0 0 8px rgba(255,107,0,0.6);
+}
+.panel-body{padding:1.25rem 1.5rem}
+
+/* TAB PANELS */
+.tab-panel { display: none; }
+.tab-panel.active { display: block; }
+
+/* TABS (buiten panel) */
+.page-tabs{
+  display:flex;overflow-x:auto;scrollbar-width:none;
+  margin-bottom:0.875rem;border-radius:10px;
+  overflow:hidden;border:1px solid var(--border);
+  flex-shrink:0;
+}
+.page-tabs::-webkit-scrollbar{display:none}
+.pt-tab{
+  flex:1;text-align:center;padding:0.75rem 0.5rem;
+  font-size:12px;font-weight:600;color:var(--text2);
+  cursor:pointer;border-bottom:2px solid transparent;
+  white-space:nowrap;transition:all 0.15s;user-select:none;
+  border-right:1px solid var(--border);background:none;
+  border-top:none;border-left:none;font-family:inherit;
+}
+.pt-tab:last-child{border-right:none}
+.pt-tab.active{color:var(--accent);border-bottom-color:var(--accent);background:var(--surface2)}
+.pt-tab:hover:not(.active){color:var(--text);background:var(--surface)}
+
+/* SCHEDULING */
+.plan-section-label{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:var(--accent);padding:10px 1rem 6px;
+  background:var(--surface2);border-bottom:1px solid var(--border);
+  border-top:1px solid var(--border);margin-top:-1px;
+}
+.plan-section-label:first-child{border-top:none;margin-top:0}
+.plan-row{
+  display:grid;grid-template-columns:62px 28px 1fr;
+  gap:0;align-items:center;
+  padding:9px 1rem 9px 1rem;
+  border-bottom:1px solid var(--border);
+  min-height:52px;
+}
+.plan-row.last{border-bottom:none}
+.plan-date{font-size:11px;color:var(--text2);font-weight:600;line-height:1.3;padding-right:8px;}
+.plan-type{width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:12px;flex-shrink:0;margin-right:10px;}
+.flight-type{background:rgba(61,142,240,0.15);color:var(--blue)}
+.match-type{background:rgba(255,107,0,0.15);color:var(--accent);font-size:13px}
+.stay-type{background:var(--surface2);font-size:13px}
+.drive-type{background:var(--surface2);font-size:13px}
+.plan-main{min-width:0}
+.plan-title{font-size:13px;font-weight:600;color:var(--white);line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan-sub{font-size:11px;color:var(--text2);margin-top:1px;line-height:1.3;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.plan-row.stay .plan-title, .plan-row.stay .plan-sub {white-space:normal;}
+.plan-row.match .plan-title{color:var(--accent)}
+.plan-row.match{background:rgba(255,107,0,0.04)}
+
+/* CONTACTS */
+.c-av{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;flex-shrink:0;background:var(--surface2);color:var(--text2)}
+.c-tel{font-size:11px;color:var(--blue);text-decoration:none;font-family:monospace;white-space:nowrap}
+.crew-section-header{
+  font-size:10px;font-weight:700;letter-spacing:1.5px;
+  text-transform:uppercase;color:var(--accent);
+  padding:10px 1rem 6px;
+  background:var(--surface2);
+  border-bottom:1px solid var(--border);
+  border-top:1px solid var(--border);
+  margin-top:-1px;
+}
+.crew-section-header:first-child{border-top:none;margin-top:0}
+
+/* SOS */
+.sos-num-big{font-family:'Bebas Neue',sans-serif;font-size:28px;color:#e74c3c;text-decoration:none;line-height:1;display:block;min-width:52px;text-align:center}
+.sos-num-sm{font-family:'Bebas Neue',sans-serif;font-size:15px;color:#e74c3c;text-decoration:none;line-height:1.2;display:block;min-width:52px;text-align:center}
+.map-btn{flex:1;text-align:center;padding:7px 0;border-radius:8px;font-size:11px;font-weight:600;text-decoration:none;border:none;cursor:pointer;font-family:inherit;transition:opacity 0.15s;}
+.map-btn-gm{background:var(--blue);color:var(--white)}
+.map-btn-am{background:#333;color:var(--white)}
+
+/* WK SEARCH & MODAL */
+.wk-search{width:100%;padding:8px 14px;background:var(--input-bg);border:1px solid var(--border);border-radius:8px;color:var(--text);font-size:13px;outline:none;font-family:inherit;margin-bottom:0.75rem;}
+.schedule-filter{display:flex;gap:6px;margin-bottom:1rem;flex-wrap:wrap}
+.sf-btn{font-size:11px;padding:5px 12px;border-radius:20px;border:1px solid var(--border);background:transparent;color:var(--text2);cursor:pointer;font-family:inherit;transition:all 0.15s;}
+.sf-btn.active{background:var(--accent);border-color:var(--accent);color:var(--white)}
+.sf-btn.nl-btn.active{background:rgba(255,107,0,0.15);border-color:rgba(255,107,0,0.5);color:var(--accent)}
+.match-list{display:flex;flex-direction:column;gap:2px}
+.match-item{display:flex;align-items:center;gap:10px;padding:7px 10px;border-radius:8px;cursor:pointer;transition:background 0.12s;font-size:13px;}
+.match-item:hover{background:var(--surface2)}
+.match-item.nl{background:rgba(255,107,0,0.06);border:1px solid rgba(255,107,0,0.15);border-radius:8px;}
+.match-item.hidden{display:none}
+.match-date{font-size:10px;color:var(--text2);min-width:80px;font-family:monospace}
+.match-teams{flex:1;color:var(--text)}
+.match-teams.nl-teams{color:var(--accent2);font-weight:500}
+.match-group{font-size:10px;background:var(--surface2);border:1px solid var(--border);padding:2px 6px;border-radius:4px;color:var(--text2);flex-shrink:0}
+.match-group.nl-grp{background:rgba(255,107,0,0.12);border-color:rgba(255,107,0,0.3);color:var(--accent)}
+.match-venue{font-size:11px;color:var(--text2);text-align:right;min-width:100px}
+.phase-label{font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--text2);padding:0.75rem 10px 0.25rem}
+
+.modal-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,0.7);z-index:1000;align-items:center;justify-content:center;padding:1rem;backdrop-filter:blur(4px)}
+.modal-overlay.open{display:flex}
+.modal{background:var(--panel-bg);border:1px solid var(--border);border-radius:16px;padding:1.5rem;max-width:420px;width:100%;position:relative;box-shadow:0 20px 60px var(--shadow);}
+.modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;font-size:20px;color:var(--text2);cursor:pointer;padding:4px}
+.modal-tag{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--accent);margin-bottom:0.5rem}
+.modal-title{font-family:'Bebas Neue',sans-serif;font-size:24px;color:var(--white);margin-bottom:0.25rem;letter-spacing:1px;line-height:1.2}
+.modal-row{display:flex;align-items:flex-start;gap:10px;padding:8px 0;border-bottom:1px solid var(--border);font-size:13px}
+.modal-label{font-size:10px;color:var(--text2);font-weight:600;min-width:70px;flex-shrink:0;padding-top:2px;text-transform:uppercase;letter-spacing:0.5px}
+.modal-value{color:var(--white);font-weight:500;}
+.modal-map-btns{display:flex;gap:8px;margin-top:1rem}
+.modal-map-btn{flex:1;padding:9px 0;border-radius:8px;font-size:12px;font-weight:600;text-decoration:none;text-align:center;display:block;}
+
+.squad-num{font-family:'Bebas Neue',sans-serif;font-size:18px;color:rgba(255,255,255,0.2);min-width:20px}
+
+/* PASSWORD SCREEN */
+#password-screen{position:fixed;inset:0;z-index:99999;background:var(--bg);display:flex;align-items:center;justify-content:center;padding:2rem;}
+#password-screen.hidden{display:none}
+.pw-box{width:100%;max-width:340px;text-align:center;}
+.pw-logo{font-family:'Bebas Neue',sans-serif;font-size:13px;letter-spacing:3px;color:var(--accent);margin-bottom:2rem;}
+.pw-title{font-family:'Bebas Neue',sans-serif;font-size:32px;color:var(--white);margin-bottom:0.375rem;}
+.pw-input{width:100%;padding:12px 16px;background:var(--surface2);border:1px solid var(--border);border-radius:10px;color:var(--white);font-size:16px;outline:none;text-align:center;margin-bottom:12px;}
+.pw-btn{width:100%;padding:13px;background:var(--accent);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;cursor:pointer;}
+.pw-error{font-size:12px;color:#e74c3c;margin-top:10px;min-height:18px;}
+
+
+/* MENUBALK VOOR MOBIEL (Desktop altijd verborgen, mobiel altijd geforceerd zichtbaar) */
+.mobile-nav {
+  display: none !important;
+}
+
+@media(max-width:768px){
+  body { flex-direction:column; }
+  .sidebar { display:none; }
+  .main { 
+    min-height:100vh; 
+    padding-bottom: calc(75px + env(safe-area-inset-bottom, 0px)); 
+  }
+  .content { padding:0.875rem; }
+  .panel { border-radius:12px; margin-bottom:0.875rem; }
+  .panel-body { padding:1rem; }
+  .match-venue { display:none; }
+  .topbar { padding:0 1rem; height:48px; }
+  .topbar-title { font-size:14px; letter-spacing:1px; }
+  
+  /* KOGELVRIJE CSS VOOR DE BOTTOM BAR */
+  .mobile-nav {
+    display: block !important;
+    position: fixed !important;
+    bottom: 0 !important;
+    left: 0 !important;
+    right: 0 !important;
+    width: 100% !important;
+    z-index: 99999 !important;
+    background: rgba(8,12,20,0.98) !important;
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border-top: 1px solid rgba(255,255,255,0.1) !important;
+    padding-top: 6px !important;
+    padding-bottom: 0px; 
+    padding-bottom: env(safe-area-inset-bottom) !important; 
+  }
+}
+
+.mobile-nav-items {
+  display:flex;
+  justify-content:space-around;
+  align-items:flex-start;
+}
+.mn-item {
+  display:flex;flex-direction:column;align-items:center;gap:3px;
+  cursor:pointer;padding:4px 6px;border-radius:8px;
+  min-width:44px;flex:1;max-width:70px;user-select:none;
+}
+.mn-item.active { background:rgba(255,107,0,0.1); }
+.mn-icon { font-size:20px; line-height:1; }
+.mn-label { font-size:9px; color:var(--text2); text-align:center; line-height:1.2; }
+.mn-item.active .mn-label { color:var(--accent); }
+.mn-item.mn-home .mn-icon { font-size:24px; }
+.mn-item.mn-home.active { background:rgba(255,107,0,0.15); }
+
+</style>
+</head>
+<body>
+
+<div id="password-screen">
+  <div class="pw-box">
+    <div class="pw-logo">RTL Nieuws</div>
+    <div class="pw-title">WK 2026</div>
+    <div class="pw-sub">Productieboek — voer het wachtwoord in</div>
+    <input class="pw-input" id="pw-input" type="password" placeholder="Wachtwoord" autocomplete="current-password">
+    <button class="pw-btn" onclick="checkPassword()">Toegang</button>
+    <div class="pw-error" id="pw-error"></div>
+  </div>
+</div>
+
+<aside class="sidebar">
+  <div class="sidebar-brand">
+    <div class="brand-tag">RTL Nieuws</div>
+    <div class="brand-title">WK 2026</div>
+    <div class="brand-sub">Productieboek · VS / Canada / Mexico</div>
+  </div>
+  <div class="oranje-badge">
+    <div class="ob-label">🟠 Oranje Wedstrijden</div>
+    <div class="ob-matches">
+      <div class="ob-match"><span class="ob-dot"></span>14 jun · NL – Japan · Dallas</div>
+      <div class="ob-match"><span class="ob-dot"></span>20 jun · NL – Zweden · Houston</div>
+      <div class="ob-match"><span class="ob-dot"></span>26 jun · Tunesië – NL · KC</div>
+    </div>
+  </div>
+  <nav class="nav">
+    <div class="nav-section-label">Navigatie</div>
+    <div class="nav-item" onclick="showPage('home')"><span class="nav-icon">🏠</span> Home</div>
+    <div class="nav-item" onclick="showPage('contacts')"><span class="nav-icon">👥</span> Team & Contacten</div>
+    <div class="nav-item" onclick="showPage('schedule')"><span class="nav-icon">📅</span> Planning</div>
+    
+    <div class="nav-section-label">Steden</div>
+    <div class="nav-item" onclick="showPage('dallas')"><span class="nav-icon">🤠</span> Dallas</div>
+    <div class="nav-item" onclick="showPage('houston')"><span class="nav-icon">🚀</span> Houston</div>
+    <div class="nav-item" onclick="showPage('kc')"><span class="nav-icon">🏈</span> Kansas City</div>
+    <div class="nav-item" onclick="showPage('curacao')"><span class="nav-icon">🏝️</span> Curaçao</div>
+    
+    <div class="nav-section-label">WK</div>
+    <div class="nav-item" onclick="showPage('wk')"><span class="nav-icon">⚽</span> Speelschema</div>
+    <div class="nav-item" onclick="showPage('squad')"><span class="nav-icon">🟠</span> Selectie Oranje</div>
+    
+    <div class="nav-section-label">Operationeel</div>
+    <div class="nav-item" onclick="showPage('license')"><span class="nav-icon">📋</span> Licentievoorwaarden</div>
+    <div class="nav-item" onclick="showPage('mixed')"><span class="nav-icon">🎙️</span> Mixed Zone</div>
+  </nav>
+</aside>
+
+<main class="main" id="main">
+  <div class="topbar">
+    <div class="topbar-title" id="topbar-title">HOME</div>
+    <div id="topbar-weather" style="display:flex;align-items:center;gap:8px;font-size:11px;color:var(--text2)">
+      <span id="tw-date"></span><span style="color:var(--border)">|</span>
+      <span id="tw-dal">DAL —</span><span id="tw-hou">HOU —</span><span id="tw-kc">KCK —</span>
+    </div>
+  </div>
+
+  <div class="content">
+
+    <div id="page-home" class="page">
+      <div class="panel" style="margin-bottom:0.875rem;overflow:hidden">
+        <div style="padding:1.5rem 1.25rem 1.25rem;text-align:center;background:linear-gradient(135deg,rgba(255,107,0,0.08) 0%,rgba(255,107,0,0.02) 100%)">
+          <div id="clock-time" style="font-family:'Bebas Neue',sans-serif;font-size:clamp(56px,18vw,96px);color:var(--white);line-height:1;letter-spacing:2px">00:00:00</div>
+          <div style="font-size:11px;font-weight:600;text-transform:uppercase;letter-spacing:3px;color:var(--text2);margin-top:4px">Tijd in Hilversum</div>
+          <div id="clock-cities" style="display:flex;justify-content:center;gap:0;margin-top:1rem;border-top:1px solid var(--border);padding-top:1rem">
+            <div style="flex:1;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:4px">Dallas</div>
+              <div id="clock-dal" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1">—</div>
+            </div>
+            <div style="flex:1;text-align:center;border-right:1px solid var(--border)">
+              <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:4px">Houston</div>
+              <div id="clock-hou" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1">—</div>
+            </div>
+            <div style="flex:1;text-align:center">
+              <div style="font-size:9px;font-weight:700;text-transform:uppercase;color:var(--text2);margin-bottom:4px">Kansas City</div>
+              <div id="clock-kc" style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--accent);line-height:1">—</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header">
+          <div class="panel-title"><span class="panel-title-dot"></span>🌤️ Weer vandaag</div>
+        </div>
+        <div class="panel-body" style="padding:0">
+          <div class="plan-row" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
+            <div style="text-align:center"><div style="font-size:9px;font-weight:700;color:var(--text2)">DAL</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-dal-temp">—</div></div>
+            <div><div class="plan-title" id="hw-dal-desc">Laden…</div><div class="plan-sub">Dallas, Texas</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💨</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-dal-wind">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">🌧️</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-dal-rain">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💧</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-dal-hum">—</div></div>
+          </div>
+          <div class="plan-row" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
+            <div style="text-align:center"><div style="font-size:9px;font-weight:700;color:var(--text2)">HOU</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-hou-temp">—</div></div>
+            <div><div class="plan-title" id="hw-hou-desc">Laden…</div><div class="plan-sub">Houston, Texas</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💨</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-hou-wind">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">🌧️</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-hou-rain">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💧</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-hou-hum">—</div></div>
+          </div>
+          <div class="plan-row last" style="grid-template-columns:40px 1fr auto auto auto;gap:10px;align-items:center;min-height:56px">
+            <div style="text-align:center"><div style="font-size:9px;font-weight:700;color:var(--text2)">KCK</div><div style="font-family:'Bebas Neue',sans-serif;font-size:22px;color:var(--white);line-height:1" id="hw-kc-temp">—</div></div>
+            <div><div class="plan-title" id="hw-kc-desc">Laden…</div><div class="plan-sub">Kansas City</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💨</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-kc-wind">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">🌧️</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-kc-rain">—</div></div>
+            <div style="text-align:center;min-width:36px"><div style="font-size:9px;color:var(--text2)">💧</div><div style="font-size:11px;font-weight:600;color:var(--white)" id="hw-kc-hum">—</div></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title"><span class="panel-title-dot"></span>📍 Waar is iedereen vandaag?</div><span style="font-size:11px;color:var(--text2)" id="today-date-label"></span></div>
+        <div class="panel-body" id="location-body"></div>
+      </div>
+
+      <div class="panel">
+        <div class="panel-header"><div class="panel-title"><span class="panel-title-dot"></span>⚽ Wedstrijden Vandaag</div><span style="font-size:11px;color:var(--text2)" id="today-matches-label"></span></div>
+        <div class="panel-body" style="padding:0" id="today-matches-body"><div style="padding:1.25rem;font-size:13px;color:var(--text2);font-style:italic">Laden…</div></div>
+      </div>
+    </div>
+
+
+    <div id="page-crew" class="page" style="display:none">
+      <div class="page-tabs" id="crew-tabs">
+        <button class="pt-tab active" onclick="showTab('crew','vs',this)">🇺🇸 VS</button>
+        <button class="pt-tab" onclick="showTab('crew','nl',this)">🇳🇱 NL</button>
+        <button class="pt-tab" onclick="showTab('crew','knvb',this)">🟢 KNVB</button>
+        <button class="pt-tab" onclick="showTab('crew','nos',this)">📡 NOS</button>
+      </div>
+      <div id="crew-vs" class="tab-panel active"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="crew-section-header">🟠 Team Oranje</div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(255,107,0,0.15);color:#ff6b00">DG</div><div><div class="plan-title">Daniel Godinho Veiga</div><div class="plan-sub">Verslaggever</div></div><a href="tel:+31681922899" class="c-tel">+316 81 92 28 99</a></div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(255,107,0,0.15);color:#ff6b00">RL</div><div><div class="plan-title">Rene Lunshof</div><div class="plan-sub">Cameraman</div></div><a href="tel:+31614043868" class="c-tel">+316 14 04 38 68</a></div>
+        <div class="crew-section-header">🔵 Team Fans</div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(61,142,240,0.15);color:#3d8ef0">SP</div><div><div class="plan-title">Sander Paulus</div><div class="plan-sub">Verslaggever</div></div><a href="tel:+31651895642" class="c-tel">+316 51 89 56 42</a></div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(61,142,240,0.15);color:#3d8ef0">PS</div><div><div class="plan-title">Peter van der Struijs</div><div class="plan-sub">Cameraman</div></div><a href="tel:+31653879965" class="c-tel">+316 53 87 99 65</a></div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(61,142,240,0.15);color:#3d8ef0">MV</div><div><div class="plan-title">Matthijs Voortman</div><div class="plan-sub">Coördinator</div></div><a href="tel:+31651535097" class="c-tel">+316 51 53 50 97</a></div>
+        <div class="plan-row"><div class="c-av" style="background:rgba(46,192,122,0.15);color:#2ec07a">DM</div><div><div class="plan-title">Dyon Mensink</div><div class="plan-sub">Producer VS</div></div><a href="tel:+31618737618" class="c-tel">+316 18 73 76 18</a></div>
+      </div></div></div>
+      <div id="crew-nl" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-row"><div class="c-av">HB</div><div><div class="plan-title">Hester Boer</div><div class="plan-sub">Coördinator</div></div><a href="tel:+31646270191" class="c-tel">+316 46 27 01 91</a></div>
+        <div class="plan-row"><div class="c-av">JV</div><div><div class="plan-title">Juul Verschuure</div><div class="plan-sub">Producer NL</div></div><a href="tel:+31641507720" class="c-tel">+316 41 50 77 20</a></div>
+      </div></div></div>
+      <div id="crew-knvb" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-row"><div class="c-av" style="background:rgba(46,192,122,0.12);color:#2ec07a">SS</div><div><div class="plan-title">Samuel Sanches</div><div class="plan-sub">Perswoordvoerder KNVB</div></div><a href="tel:+31611730450" class="c-tel">+316 11 73 04 50</a></div>
+      </div></div></div>
+      <div id="crew-nos" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-row"><div class="c-av">MM</div><div><div class="plan-title">Monique Markhorst</div><div class="plan-sub">Producer NOS</div></div><a href="tel:+31622377532" class="c-tel">+316 22 37 75 32</a></div>
+      </div></div></div>
+    </div>
+
+
+    <div id="page-travel" class="page" style="display:none">
+      <div class="page-tabs" id="travel-tabs">
+        <button class="pt-tab active" onclick="showTab('travel','planning',this)">📅 Planning</button>
+        <button class="pt-tab" onclick="showTab('travel','accom',this)">🏠 Accommodaties</button>
+        <button class="pt-tab" onclick="showTab('travel','flights',this)">✈️ Vluchten</button>
+      </div>
+      <div id="travel-planning" class="tab-panel active">
+        <div class="page-tabs" id="planning-tabs" style="margin-bottom:0.875rem">
+          <button class="pt-tab active" onclick="showTab('planning','poranje',this)">🟠 Oranje</button>
+          <button class="pt-tab" onclick="showTab('planning','pfans',this)">🔵 Fans</button>
+          <button class="pt-tab" onclick="showTab('planning','pmatthijs',this)">🏝️ Matthijs</button>
+        </div>
+        <div id="planning-poranje" class="tab-panel active"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 6065 · AMS → MSP</div></div></div>
+          <div class="plan-row match"><div class="plan-date">zo 14 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Japan</div><div class="plan-sub">AT&T Stadium Dallas</div></div></div>
+          <div class="plan-row match"><div class="plan-date">za 20 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">NL – Zweden</div><div class="plan-sub">NRG Stadium Houston</div></div></div>
+          <div class="plan-row match"><div class="plan-date">vr 26 jun</div><div class="plan-type match-type">⚽</div><div class="plan-main"><div class="plan-title">Tunesië – NL</div><div class="plan-sub">Arrowhead Stadium</div></div></div>
+        </div></div></div>
+        <div id="planning-pfans" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 661 · AMS → IAH</div></div></div>
+        </div></div></div>
+        <div id="planning-pmatthijs" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 735 · AMS → CUR</div></div></div>
+        </div></div></div>
+      </div>
+      <div id="travel-accom" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-section-label">🟠 Team Oranje</div>
+        <div class="plan-row stay"><div class="plan-date">Dallas</div><div class="plan-type stay-type">📍</div><div class="plan-main"><div class="plan-title">906 South Ewing Avenue</div></div></div>
+      </div></div></div>
+      <div id="travel-flights" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-section-label">🟠 Team Oranje</div>
+        <div class="plan-row flight"><div class="plan-date">di 9 jun</div><div class="plan-type flight-type">✈</div><div class="plan-main"><div class="plan-title">KL 6065 · AMS → MSP</div></div></div>
+      </div></div></div>
+    </div>
+
+
+    <div id="page-docs" class="page" style="display:none">
+      <div class="page-tabs" id="docs-tabs">
+        <button class="pt-tab active" onclick="showTab('docs','licentie',this)">📋 Licentie</button>
+        <button class="pt-tab" onclick="showTab('docs','mixedzone',this)">🎙️ Mixed Zone</button>
+        <button class="pt-tab" onclick="showTab('docs','accreditatie',this)">🪪 Accreditatie</button>
+      </div>
+      <div id="docs-licentie" class="tab-panel active"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-section-label">ℹ️ Max 2 minuten beelden per dag</div>
+      </div></div></div>
+      <div id="docs-mixedzone" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-section-label">Mixed Zone Station</div>
+      </div></div></div>
+      <div id="docs-accreditatie" class="tab-panel"><div class="panel"><div class="panel-body" style="padding:0">
+        <div class="plan-section-label">ℹ️ Accreditatie volgt</div>
+      </div></div></div>
+    </div>
+
+
+    <div id="page-toernooi" class="page" style="display:none">
+      <div class="page-tabs" id="toernooi-tabs">
+        <button class="pt-tab active" onclick="showTab('toernooi','schema',this)">⚽ Schema</button>
+        <button class="pt-tab" onclick="showTab('toernooi','selectie',this)">🟠 Selectie</button>
+        <button class="pt-tab" onclick="showTab('toernooi','steden',this)">🗺️ Steden</button>
+      </div>
+
+      <div id="toernooi-schema" class="tab-panel active">
+        <div class="panel">
+          <div class="panel-body" style="padding:0">
+            <div style="padding: 1rem;">
+              <input class="wk-search" id="wk-search" type="text" placeholder="Zoek op land, stad of stadion…" oninput="filterMatches()">
+              <div class="schedule-filter">
+                <button class="sf-btn nl-btn" onclick="filterPreset('nederland')" id="btn-nl">🟠 Nederland</button>
+                <button class="sf-btn active" onclick="filterPreset('')" id="btn-all">Alle wedstrijden</button>
+              </div>
+              <div class="wk-count" id="wk-count"></div>
+            </div>
+            <div class="match-list" id="wk-matches">
+              <div class="phase-label" data-phase="groepsfase">Groepsfase</div>
+              <div class="match-item nl" data-teams="Nederland Japan" data-group="F" data-venue="Dallas AT&T" data-oranje="true" onclick="openMatch('Nederland – Japan','AT&T Stadium','Dallas','zo 14 jun, 22:00 NL','Groepsfase F','AT%26T+Stadium')"><span class="match-date">14 jun 22:00</span><span class="match-teams nl-teams">🟠 NL – Japan</span><span class="match-group nl-grp">Groep F</span><span class="match-venue">Dallas</span></div>
+              <div class="match-item nl" data-teams="Nederland Zweden" data-group="F" data-venue="Houston NRG" data-oranje="true" onclick="openMatch('Nederland – Zweden','NRG Stadium','Houston','za 20 jun, 19:00 NL','Groepsfase F','NRG+Stadium')"><span class="match-date">20 jun 19:00</span><span class="match-teams nl-teams">🟠 NL – Zweden</span><span class="match-group nl-grp">Groep F</span><span class="match-venue">Houston</span></div>
+              <div class="match-item nl" data-teams="Tunesië Nederland" data-group="F" data-venue="Kansas City Arrowhead" data-oranje="true" onclick="openMatch('Tunesië – Nederland','Arrowhead','KC','vr 26 jun, 01:00 NL','Groepsfase F','Arrowhead+Stadium')"><span class="match-date">26 jun 01:00</span><span class="match-teams nl-teams">🟠 Tunesië – NL</span><span class="match-group nl-grp">Groep F</span><span class="match-venue">KC</span></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div id="toernooi-selectie" class="tab-panel" style="display:none">
+        <div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-section-label" style="color:var(--accent)">Aanvoerders</div>
+          <div class="plan-row"><div class="squad-num">4</div><div><div class="plan-title">Virgil van Dijk</div><div class="plan-sub">Liverpool</div></div></div>
+          <div class="plan-row"><div class="squad-num">21</div><div><div class="plan-title">Cody Gakpo</div><div class="plan-sub">Liverpool</div></div></div>
+        </div></div>
+      </div>
+
+      <div id="toernooi-steden" class="tab-panel" style="display:none">
+        <div class="page-tabs" id="steden-tabs" style="margin-bottom:0.875rem">
+          <button class="pt-tab active" onclick="showTab('steden','dallas',this)">🤠 Dallas</button>
+          <button class="pt-tab" onclick="showTab('steden','houston',this)">🚀 Houston</button>
+          <button class="pt-tab" onclick="showTab('steden','kc',this)">🏈 Kansas City</button>
+          <button class="pt-tab" onclick="showTab('steden','curacao',this)">🏝️ Curaçao</button>
+        </div>
+
+        <div id="steden-dallas" class="tab-panel active"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-section-label">Dallas Noodgevallen</div>
+          <div class="plan-row"><a href="tel:911" class="sos-num-big">911</a><div><div class="plan-title">Ambulance / Politie</div></div></div>
+        </div></div></div>
+        <div id="steden-houston" class="tab-panel" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-section-label">Houston Tips</div>
+          <div class="plan-row"><div class="plan-type">🌧️</div><div class="plan-main"><div class="plan-title">Zware regenbuien</div></div></div>
+        </div></div></div>
+        <div id="steden-kc" class="tab-panel" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-section-label">KC Tips</div>
+          <div class="plan-row"><div class="plan-type">🍖</div><div class="plan-main"><div class="plan-title">BBQ Hoofdstad</div></div></div>
+        </div></div></div>
+        <div id="steden-curacao" class="tab-panel" style="display:none"><div class="panel"><div class="panel-body" style="padding:0">
+          <div class="plan-section-label">Curaçao Noodgevallen</div>
+          <div class="plan-row"><a href="tel:911" class="sos-num-big">911</a><div><div class="plan-title">Politie</div></div></div>
+        </div></div></div>
+      </div>
+    </div> </div> </main>
+
+<div id="match-modal" class="modal-overlay" onclick="if(event.target===this) this.classList.remove('open')">
+  <div class="modal">
+    <button class="modal-close" onclick="document.getElementById('match-modal').classList.remove('open')">×</button>
+    <div class="modal-tag" id="modal-group">Groepsfase</div>
+    <div class="modal-title" id="modal-title">NL – Japan</div>
+    <div class="modal-sub" id="modal-date">zo 14 jun, 22:00 NL</div>
+    <div class="modal-row"><div class="modal-label">STADION</div><div class="modal-value" id="modal-stadium">AT&T Stadium</div></div>
+    <div class="modal-row"><div class="modal-label">STAD</div><div class="modal-value" id="modal-city">Dallas</div></div>
+    <div id="modal-map-btns" class="modal-map-btns"></div>
+  </div>
+</div>
+
+<nav class="mobile-nav">
+  <div class="mobile-nav-items">
+    <div class="mn-item" onclick="showPage('contacts',this)"><span class="mn-icon">👥</span><span class="mn-label">Crew</span></div>
+    <div class="mn-item" onclick="showPage('schedule',this)"><span class="mn-icon">✈️</span><span class="mn-label">Travel</span></div>
+    <div class="mn-item mn-home active" onclick="showPage('home',this)"><span class="mn-icon">🏠</span><span class="mn-label">Home</span></div>
+    <div class="mn-item" onclick="showPage('license',this)"><span class="mn-icon">📋</span><span class="mn-label">Docs</span></div>
+    <div class="mn-item" onclick="showPage('wk',this)"><span class="mn-icon">⚽</span><span class="mn-label">Toernooi</span></div>
+  </div>
+</nav>
+
+<script>
+// Tab Routering: dit was door Claude vergeten!
+function showTab(group, tabId, btn) {
+  var container = btn.closest('.page') || btn.closest('.tab-panel');
+  if (!container) return;
+
+  // Activeer knop
+  var tabGroup = btn.parentElement;
+  var btns = tabGroup.querySelectorAll('.pt-tab');
+  btns.forEach(function(b) { b.classList.remove('active'); });
+  btn.classList.add('active');
+
+  // Toon panelen binnen deze groep
+  var allPanels = container.querySelectorAll('.tab-panel');
+  allPanels.forEach(function(p) {
+     if (p.id.startsWith(group + '-')) {
+         p.classList.remove('active');
+         p.style.display = 'none';
+     }
+  });
+
+  var target = document.getElementById(group + '-' + tabId);
+  if (target) {
+    target.classList.add('active');
+    target.style.display = 'block';
+  }
+}
+
+// Map oude Sidebar links (bijv "dallas" of "squad") naar de nieuwe Toernooi tabs
+var pageTabMapping = {
+  'dallas': { root: 'toernooi', tabBtn: "showTab('steden','dallas'", parentBtn: "showTab('toernooi','steden'" },
+  'houston': { root: 'toernooi', tabBtn: "showTab('steden','houston'", parentBtn: "showTab('toernooi','steden'" },
+  'kc': { root: 'toernooi', tabBtn: "showTab('steden','kc'", parentBtn: "showTab('toernooi','steden'" },
+  'curacao': { root: 'toernooi', tabBtn: "showTab('steden','curacao'", parentBtn: "showTab('toernooi','steden'" },
+  'wk': { root: 'toernooi', tabBtn: "showTab('toernooi','schema'" },
+  'squad': { root: 'toernooi', tabBtn: "showTab('toernooi','selectie'" },
+  'contacts': { root: 'crew', tabBtn: "showTab('crew','vs'" },
+  'schedule': { root: 'travel', tabBtn: "showTab('travel','planning'" },
+  'license': { root: 'docs', tabBtn: "showTab('docs','licentie'" },
+  'mixed': { root: 'docs', tabBtn: "showTab('docs','mixedzone'" }
+};
+
+var basePages = ['home', 'crew', 'travel', 'docs', 'toernooi'];
+var pageNames = {home:'HOME',crew:'TEAM & CONTACTEN',travel:'PLANNING',docs:'DOCUMENTEN',toernooi:'TOERNOOI'};
+
+function showPage(id, mobileBtn) {
+  var rootId = id;
+  if (pageTabMapping[id]) rootId = pageTabMapping[id].root;
+
+  // 1. Toon/Verberg Hoofdpagina's
+  basePages.forEach(function(p) {
+    var el = document.getElementById('page-' + p);
+    if (el) el.style.display = (p === rootId) ? 'block' : 'none';
+  });
+
+  // 2. Navigeer naar specifieke tabs als dat is aangevraagd
+  if (pageTabMapping[id]) {
+    var map = pageTabMapping[id];
+    if(map.parentBtn) {
+       var pBtn = document.querySelector('button[onclick*="' + map.parentBtn + '"]');
+       if(pBtn) pBtn.click();
+    }
+    var tBtn = document.querySelector('button[onclick*="' + map.tabBtn + '"]');
+    if(tBtn) tBtn.click();
+  }
+
+  // 3. Update Actieve Knoppen (Mobiel en Sidebar)
+  document.querySelectorAll('.nav-item').forEach(function(ni) { ni.classList.remove('active'); });
+  document.querySelectorAll('.nav-item[onclick*="' + id + '"]').forEach(function(ni) { ni.classList.add('active'); });
+
+  document.querySelectorAll('.mn-item').forEach(function(mi) { mi.classList.remove('active'); });
+  if (mobileBtn) {
+     mobileBtn.classList.add('active');
+  } else {
+     // Als we via desktop sidebar klikken, map dat visueel terug naar de juiste mobiele bottom-knop (hoewel die verborgen is)
+     var mobClassMap = {'home':2, 'crew':0, 'travel':1, 'docs':3, 'toernooi':4};
+     var mobIndex = mobClassMap[rootId];
+     if (mobIndex !== undefined) document.querySelectorAll('.mn-item')[mobIndex].classList.add('active');
+  }
+
+  var title = document.getElementById('topbar-title');
+  if (title) title.textContent = pageNames[rootId] || rootId.toUpperCase();
+  window.scrollTo(0, 0);
+  
+  if (rootId === 'home') laadHomePagina();
+}
+
+
+function filterPreset(preset) {
+  var rows = document.querySelectorAll('#wk-matches .match-item');
+  document.querySelectorAll('.sf-btn').forEach(b => b.classList.remove('active'));
+  
+  if (preset === 'nederland') {
+    document.getElementById('btn-nl').classList.add('active');
+    rows.forEach(r => r.style.display = r.dataset.oranje === 'true' ? 'flex' : 'none');
+  } else {
+    document.getElementById('btn-all').classList.add('active');
+    rows.forEach(r => r.style.display = 'flex');
+  }
+}
+
+function openMatch(title, stadium, city, kickoff, phase, gmq) {
+  document.getElementById('modal-title').textContent = title;
+  document.getElementById('modal-group').textContent = phase;
+  document.getElementById('modal-date').textContent = kickoff;
+  document.getElementById('modal-stadium').textContent = stadium;
+  document.getElementById('modal-city').textContent = city;
+  document.getElementById('modal-map-btns').innerHTML =
+    '<a class="modal-map-btn" style="background:var(--blue);color:#fff" href="https://www.google.com/maps/search/?api=1&query='+gmq+' + gmq + '" target="_blank">Google Maps</a>';
+  document.getElementById('match-modal').classList.add('open');
+}
+
+// KLOK
+function updateClocks() {
+  var nu = new Date();
+  try {
+    document.getElementById('clock-time').textContent = nu.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', timeZone: 'Europe/Amsterdam'});
+    document.getElementById('clock-dal').textContent = nu.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', timeZone: 'America/Chicago'});
+    document.getElementById('clock-hou').textContent = nu.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', timeZone: 'America/Chicago'});
+    document.getElementById('clock-kc').textContent  = nu.toLocaleTimeString('nl-NL', {hour:'2-digit', minute:'2-digit', timeZone: 'America/Chicago'});
+  } catch(e) {}
+}
+setInterval(updateClocks, 1000);
+updateClocks();
+
+function laadHomePagina() {
+  var nu = new Date();
+  var dagen = ['zo','ma','di','wo','do','vr','za'];
+  var maanden = ['jan','feb','mrt','apr','mei','jun','jul','aug','sep','okt','nov','dec'];
+  var datumStr = dagen[nu.getDay()] + ' ' + nu.getDate() + ' ' + maanden[nu.getMonth()] + ' ' + nu.getFullYear();
+  if (document.getElementById('today-date-label')) document.getElementById('today-date-label').textContent = datumStr;
+}
+
+// Initialiseer direct
+showPage('home', document.querySelector('.mn-home'));
+</script>
+</body>
+</html>
